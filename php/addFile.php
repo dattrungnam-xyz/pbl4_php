@@ -39,3 +39,4 @@ if ($table == "cmd") {
     $stmt->execute();
 }
 $db->close();
+//vvcvc
