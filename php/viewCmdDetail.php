@@ -4,7 +4,7 @@ $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
 if (mysqli_connect_errno()) exit;
 
 $header_display = "CMD Detail ";
-$IdCmd ="";
+$IdCmd = "";
 $Ip = "";
 $Port = "";
 $Cmd = "";
@@ -12,24 +12,23 @@ $CmdResult = "";
 $Time = "";
 
 if (isset($_REQUEST['IdCmd'])) {
-    $id = $_REQUEST['IdCmd'];
-    $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
-    if (mysqli_connect_errno()) exit;
-    $sql = "Select cmd.IdCmd, cmd.Cmd,cmd.CmdResult,cmd.Time, bot.Ip, bot.Port from cmd,bot where IdCmd = " . $id." and bot.Id = cmd.IdBot";
-    $rs = mysqli_query($db, $sql);
+  $id = $_REQUEST['IdCmd'];
+  $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
+  if (mysqli_connect_errno()) exit;
+  $sql = "Select cmd.IdCmd, cmd.Cmd,cmd.CmdResult,cmd.Time, bot.Ip, bot.Port from cmd,bot where IdCmd = " . $id . " and bot.Id = cmd.IdBot";
+  $rs = mysqli_query($db, $sql);
 
-    
-    
-    
-    while ($row = mysqli_fetch_array($rs)) {
-      $IdCmd = $row["IdCmd"];
-      $Ip = $row["Ip"];
-      $Port = $row["Port"];
-      $Cmd = $row["Cmd"];
-      $CmdResult = $row["CmdResult"];
-      $Time = $row["Time"];
-    }
-    
+
+
+
+  while ($row = mysqli_fetch_array($rs)) {
+    $IdCmd = $row["IdCmd"];
+    $Ip = $row["Ip"];
+    $Port = $row["Port"];
+    $Cmd = $row["Cmd"];
+    $CmdResult = $row["CmdResult"];
+    $Time = $row["Time"];
+  }
 }
 echo '<!DOCTYPE html>
 <html lang="en">
@@ -121,56 +120,6 @@ echo '<!DOCTYPE html>
       }
       .inputCommand {
         width: 80%;
-      }
-      .navigate {
-        margin-left: 30px;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        /* justify-content: center; */
-        width: 15%;
-        height: min-content;
-        column-gap: 20px;
-        row-gap: 20px !important;
-        background: transparent;
-        padding: 20px;
-      }
-
-      .navigate_btn {
-        min-width: 140px;
-        height: 120px;
-        padding: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        flex-direction: column;
-        /* background: yellow;
-        border: 1px solid red; */
-      }
-      .navigate_btn:hover {
-        opacity: 0.6;
-        border: 1px dotted #00ff00;
-      }
-      .navigate_btn-name {
-        font-size: 20px;
-        font-family: Arial, Helvetica, sans-serif;
-        font-weight: bold;
-        color: #00ff00;
-        text-shadow: -1px 0px 0px #000, 1px 0px 0px #000, 0px 1px 0px #000,
-          0px -1px 0px #000;
-        text-align: center;
-      }
-      .navigate_btn-icon {
-        color: #00ff00;
-        margin-bottom: 4px;
-        text-shadow: -1px 0px 0px #000, 1px 0px 0px #000, 0px 1px 0px #000,
-          0px -1px 0px #000;
-      }
-      .navigate_btn:hover .navigate_btn-name,
-      .navigate_btn:hover .navigate_btn-icon {
-        transform: all 0.5s ease;
-        color: #62fa62;
       }
       .content {
         display: flex;
@@ -285,7 +234,7 @@ echo '<!DOCTYPE html>
             <label class="content_element-label" for="ip">Id Cmd</label>
             <input
               class="content_element-input"
-                value="'.$IdCmd. '"
+                value="' . $IdCmd . '"
               readonly
             />
           </div>
@@ -325,29 +274,10 @@ echo '<!DOCTYPE html>
           <button class="content_back" onclick="history.back()">Go Back</button>
         </div>
       </div>
-      <div class="navigate">
-        <a href="listBot.php" class="navigate_btn">
-          <i
-            class="fa-solid fa-laptop fa-5x navigate_btn-icon"
-            style="text-shadow: none"
-          ></i>
-          <p class="navigate_btn-name">All bot</p>
-        </a>
-        <a href="listBot.php?status=Active" class="navigate_btn">
-          <i
-            class="fa-solid fa-laptop fa-5x navigate_btn-icon"
-            style="text-shadow: none"
-          ></i>
-          <p class="navigate_btn-name">Bot Active</p>
-        </a>
-        <a href="listBot.php?status=Passive" class="navigate_btn">
-          <i
-            class="fa-solid fa-laptop fa-5x navigate_btn-icon"
-            style="text-shadow: none"
-          ></i>
-          <p class="navigate_btn-name">Bot Passive</p>
-        </a>
-      </div>
+      ';
+include_once("navigate.php");
+
+echo '
     </div>
   </body>
 </html>

@@ -5,7 +5,7 @@ if (isset($_REQUEST["ip"]) && isset($_REQUEST["port"])) {
 
     $ip = $_REQUEST["ip"];
     $port = $_REQUEST["port"];
-    $sql = "select * from bot where Ip = " . $ip . " and Port=" . $port ;
+    $sql = "select * from bot where Ip = '" . $ip . "' and Port=" . $port ;
     $rs = mysqli_query($db, $sql);
     while ($row = mysqli_fetch_array($rs)) {
         echo $row['Id'];

@@ -92,55 +92,7 @@ echo '<!DOCTYPE html>
       .inputCommand {
         width: 70%;
       }
-      .navigate {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        /* justify-content: center; */
-        width: 100%;
-        height: min-content;
-        column-gap: 30px;
-        row-gap: 30px !important;
-        background: transparent;
-        padding: 20px;
-      }
-
-      .navigate_btn {
-        width: auto;
-        min-width: 120px;
-        height: 120px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        /* background: yellow;
-        border: 1px solid red; */
-      }
-      .navigate_btn:hover {
-        border: 1px dotted #00ff00;
-      }
-      .navigate_btn:hover .navigate_btn-name,
-      .navigate_btn:hover .navigate_btn-icon
-      {
-        transform: all 0.5s ease;
-        color: #62fa62;
-      }
-      .navigate_btn-name {
-        font-size: 20px;
-        font-family: Arial, Helvetica, sans-serif;
-        font-weight: bold;
-        color: #00ff00;
-        text-shadow: -1px 0px 0px #000, 1px 0px 0px #000, 0px 1px 0px #000,
-          0px -1px 0px #000;
-        text-align: center;
-      }
-      .navigate_btn-icon {
-        margin-bottom: 4px;
-        text-shadow: -1px 0px 0px #000, 1px 0px 0px #000, 0px 1px 0px #000,
-          0px -1px 0px #000;
-        color: #00ff00;
-      }
+ 
       /* form {
         display: flex;
         flex-direction: row;
@@ -152,31 +104,9 @@ echo '<!DOCTYPE html>
 
   <body>
     <div class="container">
-      <div class="navigate">
-        <a href="listBot.php" class="navigate_btn">
-          <i
-            class="fa-solid fa-laptop fa-5x navigate_btn-icon"
-            style=" text-shadow: none"
-          ></i>
-          <p class="navigate_btn-name">List Bot</p>
-        </a>
-        <a href="listBot.php?status=Active" class="navigate_btn">
-          <i
-            class="fa-solid fa-laptop fa-5x navigate_btn-icon"
-            style=" text-shadow: none"
-          ></i>
-          <p class="navigate_btn-name">Bot Active</p>
-        </a>
-        <a href="listBot.php?status=Passive" class="navigate_btn">
-          <i
-            class="fa-solid fa-laptop fa-5x navigate_btn-icon"
-            style=" text-shadow: none"
-          ></i>
-          <p class="navigate_btn-name">Bot Passive</p>
-        </a>
-      </div>
-    </div>
+     ';
+     include_once('navigate.php');
+     echo '</div>
   </body>
 </html>
 ';
-?>
