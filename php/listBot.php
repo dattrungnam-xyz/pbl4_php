@@ -266,7 +266,7 @@ while ($stmt->fetch()) {
 	$capture = "<a style='color:#00ff00;text-decoration:underline;' href='../php/viewCapture.php?ID=" . $ID . "'>view</a>";
 	
 	
-	echo '<td class="content_table-td">' . $ID . '</td> <td class="content_table-td">' . $ip . '</td> <td class="content_table-td">' . $port . '</td> <td class="content_table-td">' . $administer . '</td> <td class="content_table-td">' . $status_display  . '</td><td class="content_table-td"> '.$cmd.'</td><td class="content_table-td"> ' .$capture.'</td><td class="content_table-td"> '.$cookies. '</td><td class="content_table-td"> ' . $keylogger . '</td><td class="content_table-td">' . $delete . '</td>';
+	echo '<td class="content_table-td">' . $ID . '</td> <td class="content_table-td">' . $ip . '</td> <td class="content_table-td">' . $port . '</td> <td class="content_table-td">' . $administer . '</td> <td class="content_table-td">' . $status_display  . '</td><td class="content_table-td"> '.$cmd.'</td><td class="content_table-td"> ' .$capture.'</td><td class="content_table-td"> '.$cookies. '</td><td class="content_table-td"> ' . $keylogger . '</td>';
 	echo '</tr>';
 }
 echo '	

