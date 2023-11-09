@@ -10,7 +10,15 @@ if (isset($_REQUEST['ID'])) {
   $id = $_REQUEST['ID'];
   $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
   if (mysqli_connect_errno()) exit;
-  $sql = "Select * from cmd where IdBot = " . $id;
+  $sql = "Select * from cmd where IdBot = " . $id." ORDER BY Time DESC";
+
+  if (isset($_GET['page'])) {
+    $offset = $_GET['page'] * 15;
+    $sql = $sql . " LIMIT 15 OFFSET " . $offset;
+  } else {
+    $sql = $sql . " LIMIT 15 ";
+  }
+
   $rs = mysqli_query($db, $sql);
   $header_display = "CMD Result " . $id;
 } else {
@@ -199,6 +207,7 @@ echo '
           </ul>
         </div>
         <div class="content">
+        <div style="  height: 410px; ">
           <table class="content_table">
             <tr class="content_table-thead">
               <th class="content_table-th">ID Cmd</th>
@@ -240,14 +249,47 @@ if (isset($_REQUEST['ID'])) {
 //     echo '</tr>';
 // }
 echo '	
-          </table>
-            <button class="content_back" onclick="history.back()">Go Back</button>
+          </table></div>';
+
+if (isset($_GET['ID'])) {
+  $sql_pagination = 'SELECT COUNT(*) as NumRecord 
+    FROM cmd where IdBot = ' . $_GET['ID'];
+
+  $rs_pagination = mysqli_query($db, $sql_pagination);
+
+  while ($row = mysqli_fetch_array($rs_pagination)) {
+    $NumRecord = $row["NumRecord"];
+  }
+
+  echo '<div style="margin:16px 0px;  display:flex; column-gap: 8px; flex-wrap: wrap;">';;
+
+  if ($NumRecord > 15) {
+
+
+    echo '<p style="color: #00ff00;">Page</p>';
+    for ($i = 0; $i <
+      $NumRecord / 15; $i++) {
+
+      if ($i != 0) {
+        $href = 'viewCmd.php?ID=' . $_GET['ID'] . "&page=" . $i;
+      } else {
+        $href = 'viewCmd.php?ID=' . $_GET['ID'];
+      }
+      $numPage = $i + 1;
+      $link = "<a style='text-decoration:underline; border: 1px solid #00ff00; padding:2px 4px; color: #00ff00;' href='" . $href . "'>" . $numPage . "</a>";
+      echo $link;
+    }
+  }
+  echo '</div>';
+}
+
+echo '  <button class="content_back" onclick="history.back()">Go Back</button>
         </div>
       </div>
     ';
 include_once("navigate.php");
 
-    echo '
+echo '
     </div>
   </body>
 </html>

