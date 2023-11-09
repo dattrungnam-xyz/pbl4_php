@@ -167,6 +167,10 @@ echo '
         width: 100%;
         min-height: 90%;
         padding: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
       }
       .content_table {
         width: 100%;
@@ -197,6 +201,18 @@ echo '
         color: #00ff00;
         text-decoration: underline;
       }
+       .content_back
+        {
+            margin-top:16px;
+            color: #00ff00;
+            border:none;
+            outline: none;
+            font-size:16px;
+            text-decoration: underline;
+            background: transparent;
+            cursor:pointer;
+            align-self: flex-start;
+        }
     </style>
   </head>
 
@@ -249,16 +265,18 @@ echo '
 //   <td class="content_table-td">bbbbbbbbbbbb</td>
 //   <td class="content_table-td">bbbbbbbbbbbb</td>
 // </tr>
+if (isset($_REQUEST['ID'])) {
 
-while ($row = mysqli_fetch_array($rs)) {
+  while ($row = mysqli_fetch_array($rs)) {
     echo '<tr class="content_table-tr">';
-  $detail = '<a class="link_detail" href="viewKeyloggerDetail.php?IdKeylogger=' . $row['IdKeylogger'] . '">detail</a>';
-
+    $detail = '<a class="link_detail" href="viewKeyloggerDetail.php?IdKeylogger=' . $row['IdKeylogger'] . '">detail</a>';
+    
     //    echo '<tr><td class="td"> ' . $row['IDNV'] . '</td><td class="td"> ' . $row['HoTen'] . '<td class="td"> ' . $row['DiaChi'] . '</td><td class="td"> ' . $row['IDPB'] . '</td></tr>';
     echo '<td class="content_table-td">' . $row['IdKeylogger'] . '</td> <td class="content_table-td">' . $row['IdBot'] . '</td> <td class="content_table-td">' . $row['TimeStart'] . '</td> <td class="content_table-td">' . $row['TimeStop'] . '</td><td class="content_table-td">' . $row['KeyloggerResult'] . '</td>  <td class="content_table-td">'.$detail.'</td>';
-
-
+    
+    
     echo '</tr>';
+  }
 }
 // while ($stmt->fetch()) {
 //     echo '<tr class="content_table-tr">';
@@ -272,6 +290,8 @@ while ($row = mysqli_fetch_array($rs)) {
 // }
 echo '	
           </table>
+          <button class="content_back" onclick="history.back()">Go Back</button>
+
         </div>
       </div>
       <div class="navigate">

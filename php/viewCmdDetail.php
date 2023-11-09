@@ -3,6 +3,13 @@
 $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
 if (mysqli_connect_errno()) exit;
 
+$header_display = "CMD Detail ";
+$IdCmd ="";
+$Ip = "";
+$Port = "";
+$Cmd = "";
+$CmdResult = "";
+$Time = "";
 
 if (isset($_REQUEST['IdCmd'])) {
     $id = $_REQUEST['IdCmd'];
@@ -11,20 +18,19 @@ if (isset($_REQUEST['IdCmd'])) {
     $sql = "Select cmd.IdCmd, cmd.Cmd,cmd.CmdResult,cmd.Time, bot.Ip, bot.Port from cmd,bot where IdCmd = " . $id." and bot.Id = cmd.IdBot";
     $rs = mysqli_query($db, $sql);
 
+    
+    
+    
+    while ($row = mysqli_fetch_array($rs)) {
+      $IdCmd = $row["IdCmd"];
+      $Ip = $row["Ip"];
+      $Port = $row["Port"];
+      $Cmd = $row["Cmd"];
+      $CmdResult = $row["CmdResult"];
+      $Time = $row["Time"];
+    }
+    
 }
-
-    $header_display = "CMD Detail ";
-
-
-while ($row = mysqli_fetch_array($rs)) {
-    $IdCmd = $row["IdCmd"];
-    $Ip = $row["Ip"];
-    $Port = $row["Port"];
-    $Cmd = $row["Cmd"];
-    $CmdResult = $row["CmdResult"];
-    $Time = $row["Time"];
-}
-
 echo '<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -170,7 +176,7 @@ echo '<!DOCTYPE html>
         display: flex;
         flex-direction: column;
         align-items: center;
-        /* justify-content: center; */
+        justify-content: space-between; 
         width: 100%;
         min-height: 90%;
         padding: 30px;
@@ -228,6 +234,18 @@ echo '<!DOCTYPE html>
             border: 1px solid #00ff00;
             outline: none;
             border-radius: 4px;
+        }
+        .content_back
+        {
+            margin-top:16px;
+            color: #00ff00;
+            border:none;
+            outline: none;
+            font-size:16px;
+            text-decoration: underline;
+            background: transparent;
+            cursor:pointer;
+            align-self: flex-start;
         }
     </style>
   </head>
@@ -304,6 +322,7 @@ echo '<!DOCTYPE html>
                 rows="8"
             >' . $CmdResult . '</textarea>
           </div>
+          <button class="content_back" onclick="history.back()">Go Back</button>
         </div>
       </div>
       <div class="navigate">

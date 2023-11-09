@@ -7,14 +7,13 @@ if (mysqli_connect_errno()) exit;
 
 
 if (isset($_REQUEST['ID'])) {
-    $id = $_REQUEST['ID'];
-    $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
-    if (mysqli_connect_errno()) exit;
-    $sql = "Select * from cmd where IdBot = " . $id;
-    $rs = mysqli_query($db, $sql);
-    $header_display = "CMD Result " . $id;
-}
-else{
+  $id = $_REQUEST['ID'];
+  $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
+  if (mysqli_connect_errno()) exit;
+  $sql = "Select * from cmd where IdBot = " . $id;
+  $rs = mysqli_query($db, $sql);
+  $header_display = "CMD Result " . $id;
+} else {
   $header_display = "CMD Result ";
 }
 
@@ -171,6 +170,9 @@ echo '
         width: 100%;
         min-height: 90%;
         padding: 30px;
+        display:flex;
+        flex-direction: column;
+        justify-content: space-between;
       }
       .content_table {
         width: 100%;
@@ -201,6 +203,18 @@ echo '
         color: #00ff00;
         text-decoration: underline;
       }
+      .content_back
+        {
+            margin-top:16px;
+            color: #00ff00;
+            border:none;
+            outline: none;
+            font-size:16px;
+            text-decoration: underline;
+            background: transparent;
+            cursor:pointer;
+            align-self: flex-start;
+        }
     </style>
   </head>
 
@@ -253,15 +267,17 @@ echo '
 //   <td class="content_table-td">bbbbbbbbbbbb</td>
 //   <td class="content_table-td">bbbbbbbbbbbb</td>
 // </tr>
+if (isset($_REQUEST['ID'])) {
 
-while ($row = mysqli_fetch_array($rs)) {
+  while ($row = mysqli_fetch_array($rs)) {
     echo '<tr class="content_table-tr">';
-    $detail = '<a class="link_detail" href="viewCmdDetail.php?IdCmd='.$row['IdCmd'].'">detail</a>';
+    $detail = '<a class="link_detail" href="viewCmdDetail.php?IdCmd=' . $row['IdCmd'] . '">detail</a>';
     //     echo '<tr><td class="td"> ' . $row['IDNV'] . '</td><td class="td"> ' . $row['HoTen'] . '<td class="td"> ' . $row['DiaChi'] . '</td><td class="td"> ' . $row['IDPB'] . '</td></tr>';
-    echo '<td class="content_table-td">' . $row['IdCmd'] . '</td><td class="content_table-td">' . $row['Time'] . '</td> <td class="content_table-td">' . $row['Cmd'] . '</td> <td class="content_table-td">' . $row['CmdResult'] . '</td> <td class="content_table-td">'.$detail.'</td>';
+    echo '<td class="content_table-td">' . $row['IdCmd'] . '</td><td class="content_table-td">' . $row['Time'] . '</td> <td class="content_table-td">' . $row['Cmd'] . '</td> <td class="content_table-td">' . $row['CmdResult'] . '</td> <td class="content_table-td">' . $detail . '</td>';
 
 
     echo '</tr>';
+  }
 }
 // while ($stmt->fetch()) {
 //     echo '<tr class="content_table-tr">';
@@ -275,6 +291,7 @@ while ($row = mysqli_fetch_array($rs)) {
 // }
 echo '	
           </table>
+            <button class="content_back" onclick="history.back()">Go Back</button>
         </div>
       </div>
       <div class="navigate">

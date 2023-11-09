@@ -4,14 +4,17 @@
 $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
 if (mysqli_connect_errno()) exit;
 
-$header_display = "Cookies Result";
+
 
 if (isset($_REQUEST['ID'])) {
-  $id = $_REQUEST['ID'];
-  $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
-  if (mysqli_connect_errno()) exit;
-  $sql = "Select * from cookies where IdBot = " . $id;
-  $rs = mysqli_query($db, $sql);
+    $id = $_REQUEST['ID'];
+    $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
+    if (mysqli_connect_errno()) exit;
+    $sql = "Select * from capture where IdBot = " . $id;
+    $rs = mysqli_query($db, $sql);
+    $header_display = "Capture Result " . $id;
+} else {
+    $header_display = "Capture Result ";
 }
 
 // while ($stmt->fetch()) {
@@ -170,7 +173,6 @@ echo '
         display:flex;
         flex-direction: column;
         justify-content: space-between;
-
       }
       .content_table {
         width: 100%;
@@ -249,12 +251,9 @@ echo '
         <div class="content">
           <table class="content_table">
             <tr class="content_table-thead">
-              <th class="content_table-th">ID </th>
-              <th class="content_table-th">ID bot</th>
+              <th class="content_table-th">Id Capture</th>
               <th class="content_table-th">Time</th>
-              <th class="content_table-th">Url</th>
-              <th class="content_table-th">Cookies Result</th>
-                <th class="content_table-th">Detail</th>
+              <th class="content_table-th">View Image</th>
             </tr>';
 
 // <tr class="content_table-tr">
@@ -265,17 +264,18 @@ echo '
 //   <td class="content_table-td">bbbbbbbbbbbb</td>
 //   <td class="content_table-td">bbbbbbbbbbbb</td>
 // </tr>
+
 if (isset($_REQUEST['ID'])) {
 
-  while ($row = mysqli_fetch_array($rs)) {
-    echo '<tr class="content_table-tr">';
-    $detail = '<a class="link_detail" href="viewCookiesDetail.php?IdCookies=' . $row['IdCookies'] . '">detail</a>';
-    //    echo '<tr><td class="td"> ' . $row['IDNV'] . '</td><td class="td"> ' . $row['HoTen'] . '<td class="td"> ' . $row['DiaChi'] . '</td><td class="td"> ' . $row['IDPB'] . '</td></tr>';
-    echo '<td class="content_table-td">' . $row['IdCookies'] . '</td> <td class="content_table-td">' . $row['IdBot'] . '</td><td class="content_table-td">' . $row['Time'] . '</td> <td class="content_table-td">' . $row['Url'] . '</td> <td class="content_table-td">' . $row['CookiesResult'] . '</td> <td class="content_table-td">' . $detail . '</td>';
+    while ($row = mysqli_fetch_array($rs)) {
+        echo '<tr class="content_table-tr">';
+        $detail = '<a class="link_detail" href="viewCaptureDetail.php?IdCapture=' . $row['IdCapture'] . '">View</a>';
+        //     echo '<tr><td class="td"> ' . $row['IDNV'] . '</td><td class="td"> ' . $row['HoTen'] . '<td class="td"> ' . $row['DiaChi'] . '</td><td class="td"> ' . $row['IDPB'] . '</td></tr>';
+        echo '<td class="content_table-td">' . $row['IdCapture'] . '</td><td class="content_table-td">' . $row['Time'] . '</td><td class="content_table-td">' . $detail . '</td>';
 
 
-    echo '</tr>';
-  }
+        echo '</tr>';
+    }
 }
 // while ($stmt->fetch()) {
 //     echo '<tr class="content_table-tr">';
@@ -289,8 +289,7 @@ if (isset($_REQUEST['ID'])) {
 // }
 echo '	
           </table>
-          <button class="content_back" onclick="history.back()">Go Back</button>
-
+            <button class="content_back" onclick="history.back()">Go Back</button>
         </div>
       </div>
       <div class="navigate">
