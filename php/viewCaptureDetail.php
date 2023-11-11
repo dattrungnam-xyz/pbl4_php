@@ -1,22 +1,9 @@
-<?php
-
-
-// // $image_data = base64_decode($base64_data);
-// $updatedString = str_replace(" ", "+", $string2);
-// $image_data = base64_decode($updatedString);
-
-
-
-// // Set the Content-Type header to indicate that you're sending an image
-// header("Content-Type: image/png"); // Change this content type to match the actual image type
-
-// // Output the image data
-// echo $image_data;
-?>
-
-
 
 <?php
+session_start();
+$header_display = "View Capture Detail";
+
+if (isset($_SESSION['login']) && $_SESSION['login'] == true) {
 $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
 if (mysqli_connect_errno()) exit;
 
@@ -266,4 +253,9 @@ echo '
   </body>
 </html>
 ';
+}
+else
+{
+  include_once('noLogin.php');
+}
 ?>

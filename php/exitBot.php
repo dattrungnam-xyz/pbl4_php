@@ -27,4 +27,4 @@ if (isset($_REQUEST['ID'])) {
     fwrite($fp, "stop");
     fclose($fp);
 }
-header("Location: ../php/listBot.php");
+header("Location: ../php/listBot.php?status=Active");

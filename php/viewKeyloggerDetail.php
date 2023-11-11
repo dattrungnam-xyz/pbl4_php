@@ -1,5 +1,9 @@
 
 <?php
+session_start();
+$header_display = "View Keylogger Detail";
+
+if (isset($_SESSION['login']) && $_SESSION['login'] == true) {
 $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
 if (mysqli_connect_errno()) exit;
 
@@ -285,4 +289,7 @@ include_once("navigate.php");
   </body>
 </html>
 ';
+} else {
+  include_once('noLogin.php');
+}
 ?>

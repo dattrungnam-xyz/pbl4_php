@@ -1,24 +1,24 @@
 <?php 
+
 echo '<style>
       
       .navigate {
-        margin-left: 30px;
+        margin-left: 16px;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         /* justify-content: center; */
         width: 15%;
         height: min-content;
-        column-gap: 20px;
+        column-gap: 4px;
         row-gap: 20px !important;
         background: transparent;
-        padding: 20px;
+
       }
 
       .navigate_btn {
-        min-width: 140px;
-        height: 120px;
-        padding: 10px;
+        width: 94px;
+        height: 94px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -32,7 +32,7 @@ echo '<style>
         border: 1px dotted #00ff00;
       }
       .navigate_btn-name {
-        font-size: 20px;
+        font-size: 16px;
         font-family: Arial, Helvetica, sans-serif;
         font-weight: bold;
         color: #00ff00;
@@ -55,32 +55,49 @@ echo '<style>
 echo ' <div class="navigate">
         <a href="listBot.php" class="navigate_btn">
           <i
-            class="fa-solid fa-laptop fa-5x navigate_btn-icon"
+            class="fa-solid fa-laptop fa-3x navigate_btn-icon"
             style=" text-shadow: none"
           ></i>
           <p class="navigate_btn-name">List Bot</p>
         </a>
         <a href="listBot.php?status=Active" class="navigate_btn">
           <i
-            class="fa-solid fa-laptop fa-5x navigate_btn-icon"
+            class="fa-solid fa-laptop fa-3x navigate_btn-icon"
             style=" text-shadow: none"
           ></i>
           <p class="navigate_btn-name">Bot Active</p>
         </a>
         <a href="listBot.php?status=Passive" class="navigate_btn">
           <i
-            class="fa-solid fa-laptop fa-5x navigate_btn-icon"
+            class="fa-solid fa-laptop fa-3x navigate_btn-icon"
             style=" text-shadow: none"
           ></i>
           <p class="navigate_btn-name">Bot Passive</p>
         </a>
         <a href="openBot.php" class="navigate_btn">
           <i
-            class="fa-solid fa-laptop fa-5x navigate_btn-icon"
+            class="fa-solid fa-laptop fa-3x navigate_btn-icon"
             style=" text-shadow: none"
           ></i>
           <p class="navigate_btn-name">Control All </p>
-        </a>
-      </div>';
+        </a>';
+if (isset($_SESSION['login']) && $_SESSION['login'] == true) {
+       echo '<a href="handleLogout.php" class="navigate_btn">
+          <i
+            class="fa-solid fa-laptop fa-3x navigate_btn-icon"
+            style=" text-shadow: none"
+          ></i>
+          <p class="navigate_btn-name">Log Out</p>
+        </a>';}
+        else{
+  echo '<a href="login.php" class="navigate_btn">
+          <i
+            class="fa-solid fa-laptop fa-3x navigate_btn-icon"
+            style=" text-shadow: none"
+          ></i>
+          <p class="navigate_btn-name">Log In</p>
+        </a>';
+        }
+      echo'</div>';
 
 ?>

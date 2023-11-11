@@ -2,6 +2,10 @@
 
 
 <?php
+$header_display = "All bot";
+session_start();
+if (isset($_SESSION['login']) && $_SESSION['login'] == true) {
+
 $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
 if (mysqli_connect_errno()) exit;
 
@@ -313,4 +317,9 @@ echo '
 </html>
 
 ';
+}
+else
+{
+  include_once('noLogin.php');
+}
 ?>

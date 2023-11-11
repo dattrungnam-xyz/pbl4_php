@@ -1,36 +1,40 @@
 
 <?php
-$db = new mysqli('localhost', 'root', '', 'pbl4_v2');
-if (mysqli_connect_errno()) exit;
+session_start();
+$header_display = "View Cmd Detail";
 
-$header_display = "CMD Detail ";
-$IdCmd = "";
-$Ip = "";
-$Port = "";
-$Cmd = "";
-$CmdResult = "";
-$Time = "";
-
-if (isset($_REQUEST['IdCmd'])) {
-  $id = $_REQUEST['IdCmd'];
+if (isset($_SESSION['login']) && $_SESSION['login'] == true) {
   $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
   if (mysqli_connect_errno()) exit;
-  $sql = "Select cmd.IdCmd, cmd.Cmd,cmd.CmdResult,cmd.Time, bot.Ip, bot.Port from cmd,bot where IdCmd = " . $id . " and bot.Id = cmd.IdBot";
-  $rs = mysqli_query($db, $sql);
+
+  $header_display = "CMD Detail ";
+  $IdCmd = "";
+  $Ip = "";
+  $Port = "";
+  $Cmd = "";
+  $CmdResult = "";
+  $Time = "";
+
+  if (isset($_REQUEST['IdCmd'])) {
+    $id = $_REQUEST['IdCmd'];
+    $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
+    if (mysqli_connect_errno()) exit;
+    $sql = "Select cmd.IdCmd, cmd.Cmd,cmd.CmdResult,cmd.Time, bot.Ip, bot.Port from cmd,bot where IdCmd = " . $id . " and bot.Id = cmd.IdBot";
+    $rs = mysqli_query($db, $sql);
 
 
 
 
-  while ($row = mysqli_fetch_array($rs)) {
-    $IdCmd = $row["IdCmd"];
-    $Ip = $row["Ip"];
-    $Port = $row["Port"];
-    $Cmd = $row["Cmd"];
-    $CmdResult = $row["CmdResult"];
-    $Time = $row["Time"];
+    while ($row = mysqli_fetch_array($rs)) {
+      $IdCmd = $row["IdCmd"];
+      $Ip = $row["Ip"];
+      $Port = $row["Port"];
+      $Cmd = $row["Cmd"];
+      $CmdResult = $row["CmdResult"];
+      $Time = $row["Time"];
+    }
   }
-}
-echo '<!DOCTYPE html>
+  echo '<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -275,11 +279,14 @@ echo '<!DOCTYPE html>
         </div>
       </div>
       ';
-include_once("navigate.php");
+  include_once("navigate.php");
 
-echo '
+  echo '
     </div>
   </body>
 </html>
 ';
+} else {
+  include_once('noLogin.php');
+}
 ?>

